@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  tarantool:
+    image: romaspirin/tnt-cow:simple
+    ports:
+      - "3301:3301"
+    container_name: tnt-cow
+    environment:
+      - TARANTOOL_USER_NAME=tarantool
+      - TARANTOOL_USER_PASSWORD=tarantool
+  backend:
+    image: romaspirin/cow-backend:simple
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tarantool
+    container_name: cow-backend
+    env_file:
+      - ../config/dev.env
