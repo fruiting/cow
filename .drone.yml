@@ -1,8 +1,13 @@
-pipeline:
-  run-tests:
-    image: golang:1.16
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: test
+    image: golang
     commands:
-      - ./run.sh unit
+      - go build
+      - go test
 
 #  publish-api-docker:
 #    username: ${DOCKER_USERNAME}
