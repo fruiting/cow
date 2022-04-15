@@ -1,0 +1,33 @@
+pipeline:
+  run-tests:
+    image: golang:1.16
+    commands:
+      - ./run.sh unit
+
+#  publish-api-docker:
+#    username: ${DOCKER_USERNAME}
+#    password: ${DOCKER_PASSWORD}
+#    email: ${DOCKER_EMAIL}
+#    repo: anorsich/ds-api
+#    tags:
+#      - latest
+#    dockerfile: ./Dockerfile
+#    context: .
+#
+#    image: plugins/docker
+#      pull: always
+#      settings:
+#        repo: docker.citik.ru/microservices/envoy-waf-filter
+#        registry: docker.citik.ru
+#        mirror: https://docker.citik.ru
+#        username:
+#          from_secret: docker_username
+#        password:
+#          from_secret: docker_password
+#        custom_labels:
+#          - com.jfrog.artifactory.retention.maxCount=10
+#        tags:
+#          - latest
+#          - "${DRONE_TAG##v}"
+#      when: *allTags
+#      depends_on: [ build ]

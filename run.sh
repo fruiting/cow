@@ -9,6 +9,11 @@ run(){
     romaspirin/cow-backend
 }
 
+unit(){
+  echo "run unit tests..."
+  go test ./...
+}
+
 command="$1"
 if [ -z "$command" ]
 then
