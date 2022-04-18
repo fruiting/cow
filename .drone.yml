@@ -4,10 +4,12 @@ name: default
 
 steps:
   - name: test
-    image: golang
+    image: golang:1.17
+    environment:
+      GOFLAGS: "-mod=vendor"
     commands:
-      - go build
-      - go test
+      - ./run.sh unit
+    depends_on: [ mockgen_check ]
 
 #  publish-api-docker:
 #    username: ${DOCKER_USERNAME}
