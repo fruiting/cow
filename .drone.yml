@@ -3,10 +3,8 @@ name: default
 
 steps:
   - name: test
-    image: golang
     commands:
-      - go build
-      - go test
+      - echo 'a'
 
 #  publish-api-docker:
 #    username: ${DOCKER_USERNAME}
