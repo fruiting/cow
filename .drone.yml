@@ -15,7 +15,7 @@ cl-templates:
         from_secret: telegram_notify_deploy_chat_id
 
 steps:
-  - name: telegram_notify_finish_deploy_to_stage
+  - name: telegram_notify_start_deploy_to_stage
     <<: *telegram_notify_deploy
     settings:
       message: "*${DRONE_REPO}*: Версия *${DRONE_TAG##v}* разворачивается для приложения cow"
