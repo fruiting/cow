@@ -3,35 +3,34 @@ type: docker
 name: default
 
 steps:
+  - name: linter
+    image: golangci/golangci-lint:latest
+    pull: always
+    commands:
+      - golangci-lint run -v
+
   - name: test
     image: golang:1.17
     commands:
       - go test ./...
+    depends_on: [ linter ]
 
-#  publish-api-docker:
-#    username: ${DOCKER_USERNAME}
-#    password: ${DOCKER_PASSWORD}
-#    email: ${DOCKER_EMAIL}
-#    repo: anorsich/ds-api
-#    tags:
-#      - latest
-#    dockerfile: ./Dockerfile
-#    context: .
-#
-#    image: plugins/docker
-#      pull: always
-#      settings:
-#        repo: docker.citik.ru/microservices/envoy-waf-filter
-#        registry: docker.citik.ru
-#        mirror: https://docker.citik.ru
-#        username:
-#          from_secret: docker_username
-#        password:
-#          from_secret: docker_password
-#        custom_labels:
-#          - com.jfrog.artifactory.retention.maxCount=10
-#        tags:
-#          - latest
-#          - "${DRONE_TAG##v}"
-#      when: *allTags
-#      depends_on: [ build ]
+  - name: build
+    image: golang:1.17
+    commands:
+      - CGO_ENABLED=0 go build ./cmd/cow
+    depends_on: [ test ]
+
+  - name: publish_docker
+    image: plugins/docker
+    pull: always
+    settings:
+      repo: romaspirin/cow
+      registry: dockerhub.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags:
+        - latest
+    depends_on: [ build ]
