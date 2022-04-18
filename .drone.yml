@@ -25,6 +25,8 @@ steps:
     image: plugins/docker
     settings:
       repo: romaspirin/cow-backend
-      username: docker_username
-      password: docker_password
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
     depends_on: [ build ]
