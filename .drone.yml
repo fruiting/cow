@@ -2,6 +2,10 @@ kind: pipeline
 type: docker
 name: default
 
+cl-templates:
+  tags: &tags
+    event: tag
+
 steps:
   - name: linter
     image: golangci/golangci-lint:latest
@@ -29,4 +33,5 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
+    when: *tags
     depends_on: [ build ]
