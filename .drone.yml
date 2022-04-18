@@ -9,7 +9,6 @@ steps:
       GOFLAGS: "-mod=vendor"
     commands:
       - ./run.sh unit
-    depends_on: [ mockgen_check ]
 
 #  publish-api-docker:
 #    username: ${DOCKER_USERNAME}
