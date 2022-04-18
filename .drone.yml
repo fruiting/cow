@@ -33,9 +33,9 @@ steps:
       - sh ./run.sh unit
 
   - name: test_race
-      image: golang:1.17
-      commands:
-        - sh ./run.sh unit_race
+    image: golang:1.17
+    commands:
+      - sh ./run.sh unit_race
 
   - name: build
     image: golang:1.17
