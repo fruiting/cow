@@ -14,6 +14,11 @@ unit(){
   go test ./...
 }
 
+unit_race() {
+  echo "run unit tests with race test"
+  go test -race ./...
+}
+
 command="$1"
 if [ -z "$command" ]
 then

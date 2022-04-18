@@ -6,7 +6,21 @@ cl-templates:
   tags: &tags
     event: tag
 
+  telegram_notify_deploy: &telegram_notify_deploy
+    image: appleboy/drone-telegram
+    settings:
+      token:
+        from_secret: telegram_notify_deploy_token
+      chat_id:
+        from_secret: telegram_notify_deploy_chat_id
+
 steps:
+  - name: telegram_notify_finish_deploy_to_stage
+    <<: *telegram_notify_deploy
+    settings:
+      message: "*${DRONE_REPO}*: Версия *${DRONE_TAG##v}* разворачивается для приложения cow"
+    when: *tags
+
   - name: linter
     image: golangci/golangci-lint:latest
     pull: always
@@ -18,11 +32,16 @@ steps:
     commands:
       - sh ./run.sh unit
 
+  - name: test_race
+      image: golang:1.17
+      commands:
+        - sh ./run.sh unit_race
+
   - name: build
     image: golang:1.17
     commands:
       - CGO_ENABLED=0 go build ./cmd/cow
-    depends_on: [ linter, test ]
+    depends_on: [ linter, test, test_race ]
 
   - name: publish_docker
     image: plugins/docker
@@ -34,3 +53,10 @@ steps:
         from_secret: docker_password
     when: *tags
     depends_on: [ build ]
+
+  - name: telegram_notify_finish_deploy_to_stage
+    <<: *telegram_notify_deploy
+    settings:
+      message: "*${DRONE_REPO}*: Версия *${DRONE_TAG##v}* развернута для приложения cow"
+    when: *tags
+    depends_on: [ publish_docker ]
