@@ -23,14 +23,8 @@ steps:
 
   - name: publish_docker
     image: plugins/docker
-    pull: always
     settings:
       repo: romaspirin/cow-backend
-      registry: hub.docker.com
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      tags:
-        - latest
+      username: docker_username
+      password: docker_password
     depends_on: [ build ]
