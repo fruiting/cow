@@ -5,9 +5,6 @@ name: default
 steps:
   - name: test
     image: golang:1.17
-    user: 0
-    environment:
-      GOFLAGS: "-mod=vendor"
     commands:
       - go test ./...
 
