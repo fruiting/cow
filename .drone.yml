@@ -9,7 +9,7 @@ steps:
     environment:
       GOFLAGS: "-mod=vendor"
     commands:
-      - ./run.sh unit
+      - go test ./...
 
 #  publish-api-docker:
 #    username: ${DOCKER_USERNAME}
