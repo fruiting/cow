@@ -26,32 +26,32 @@ func TestScoresStorage_Replace(t *testing.T) {
 		want func() error
 	}{
 		{
-			"succeess",
-			&args{
-				&internal.Score{
-					"123",
-					"Roman",
-					50,
-					1649674495,
+			name: "succeess",
+			args: &args{
+				score: &internal.Score{
+					GameId:    "123",
+					Name:      "Roman",
+					Score:     50,
+					ExpiresAt: 1649674495,
 				},
 			},
-			func() error {
+			want: func() error {
 				tntClient.EXPECT().Call17(gomock.Any(), gomock.Any()).Return(nil, nil)
 
 				return nil
 			},
 		},
 		{
-			"error",
-			&args{
-				&internal.Score{
-					"123",
-					"Roman",
-					50,
-					1649674495,
+			name: "error",
+			args: &args{
+				score: &internal.Score{
+					GameId:    "123",
+					Name:      "Roman",
+					Score:     50,
+					ExpiresAt: 1649674495,
 				},
 			},
-			func() error {
+			want: func() error {
 				err := errors.New("mock")
 				tntClient.EXPECT().Call17(gomock.Any(), gomock.Any()).Return(nil, err)
 
