@@ -16,7 +16,7 @@ steps:
   - name: test
     image: golang:1.17
     commands:
-      - go test ./...
+      - sh ./run.sh unit
     depends_on: [ linter ]
 
   - name: build
