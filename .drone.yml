@@ -17,13 +17,12 @@ steps:
     image: golang:1.17
     commands:
       - sh ./run.sh unit
-    depends_on: [ linter ]
 
   - name: build
     image: golang:1.17
     commands:
       - CGO_ENABLED=0 go build ./cmd/cow
-    depends_on: [ test ]
+    depends_on: [ linter, test ]
 
   - name: publish_docker
     image: plugins/docker
