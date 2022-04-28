@@ -21,11 +21,11 @@ steps:
       message: "*${DRONE_REPO}*: Версия *${DRONE_TAG##v}* разворачивается для приложения cow"
     when: *tags
 
-  - name: linter
-    image: golangci/golangci-lint:latest
-    pull: always
-    commands:
-      - golangci-lint run -v
+#  - name: linter
+#    image: golangci/golangci-lint:latest
+#    pull: always
+#    commands:
+#      - golangci-lint run -v
 
   - name: test
     image: golang:1.17
@@ -41,7 +41,7 @@ steps:
     image: golang:1.17
     commands:
       - CGO_ENABLED=0 go build ./cmd/cow
-    depends_on: [ linter, test, test_race ]
+    depends_on: [ test, test_race ]
 
   - name: publish_docker
     image: plugins/docker
@@ -51,7 +51,7 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-    when: *tags
+#    when: *tags
     depends_on: [ build ]
 
   - name: telegram_notify_finish_deploy_to_stage
