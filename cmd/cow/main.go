@@ -3,7 +3,6 @@ package main
 import (
 	"cow/internal"
 	http_internal "cow/internal/http"
-	tnt "cow/internal/tarantool"
 	"fmt"
 	"github.com/tarantool/go-tarantool"
 	"go.uber.org/zap"
@@ -15,15 +14,15 @@ import (
 )
 
 func main() {
-	logger, _ := initLogger()
-	tntClient := initTntClient(logger)
-	scoreStorage := tnt.NewScoresStorage(tntClient)
+	//logger, _ := initLogger()
+	//tntClient := initTntClient(logger)
+	//scoreStorage := tnt.NewScoresStorage(tntClient)
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	go func() {
-		initHttpServer(scoreStorage, logger)
-		wg.Done()
+		//initHttpServer(scoreStorage, logger)
+		//wg.Done()
 	}()
 
 	wg.Wait()
@@ -89,7 +88,9 @@ func initHttpServer(scoreStorage internal.ScoresStorage, logger *zap.Logger) {
 		zap.String("port", os.Getenv("CL_HTTP_SERVICE_LISTEN")),
 	)
 
+	http.HandleFunc("/v1/ping", api.Ping)
 	http.HandleFunc("/v1/add", api.SetScore)
+	http.HandleFunc("/v1/get", api.FindScore)
 	err := http.ListenAndServe(os.Getenv("CL_HTTP_SERVICE_LISTEN"), nil)
 	if err != nil {
 		logger.Fatal("can't listen and serve", zap.Error(err))

@@ -5,6 +5,8 @@ package internal
 type ScoresStorage interface {
 	// Replace saves scores
 	Replace(score *Score) error
+	// Find returns scores
+	Find(gameId, name string) (*Score, error)
 }
 
 // Score player score

@@ -13,7 +13,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/objx v0.1.0 // indirect
 	github.com/stretchr/testify v1.7.1 // indirect
-	github.com/tarantool/go-tarantool v0.0.0-20220330122907-31ebde8f41b3 // indirect
+	github.com/tarantool/go-tarantool v0.0.0-20220428190348-de95e3184df6 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.35.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
