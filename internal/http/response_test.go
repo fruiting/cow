@@ -26,32 +26,32 @@ func TestWrite(t *testing.T) {
 		want func() (int, int)
 	}{
 		{
-			"success",
-			&args{
-				1,
+			name: "success",
+			args: &args{
+				toMarshal: 1,
 			},
-			func() (int, int) {
+			want: func() (int, int) {
 				serverMock.EXPECT().Write(gomock.Any()).Return(0, nil)
 				return 0, 0
 			},
 		},
 		{
-			"marshal error",
-			&args{
-				map[string]interface{}{
+			name: "marshal error",
+			args: &args{
+				toMarshal: map[string]interface{}{
 					"foo": make(chan int),
 				},
 			},
-			func() (int, int) {
+			want: func() (int, int) {
 				return 1, 0
 			},
 		},
 		{
-			"write error",
-			&args{
-				1,
+			name: "write error",
+			args: &args{
+				toMarshal: 1,
 			},
-			func() (int, int) {
+			want: func() (int, int) {
 				serverMock.EXPECT().Write(gomock.Any()).Return(0, errors.New("mock"))
 				return 0, 1
 			},

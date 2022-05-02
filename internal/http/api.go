@@ -26,6 +26,11 @@ func NewApi(scoresStorage internal.ScoresStorage, logger *zap.Logger, resp *resp
 	}
 }
 
+// Ping func to ping api
+func (a *Api) Ping(w http.ResponseWriter, req *http.Request) {
+	a.resp.createResponse(w, req, "Pong")
+}
+
 // SetScore saves score in storage
 func (a *Api) SetScore(w http.ResponseWriter, req *http.Request) {
 	gameId := req.URL.Query().Get("gameId")
@@ -69,4 +74,29 @@ func (a *Api) SetScore(w http.ResponseWriter, req *http.Request) {
 	}
 
 	a.resp.createResponse(w, req, "Ok")
+}
+
+// FindScore returns score from a storage
+func (a *Api) FindScore(w http.ResponseWriter, req *http.Request) {
+	gameId := req.URL.Query().Get("gameId")
+	if gameId == "" {
+		a.resp.createBadRequestResponse(w, req, errors.New("gameId is required"))
+		a.logger.Info("gameId is required", zap.Any("query", req.URL.Query()))
+		return
+	}
+
+	name := req.URL.Query().Get("name")
+	if name == "" {
+		a.resp.createBadRequestResponse(w, req, errors.New("name is required"))
+		a.logger.Info("name is required", zap.Any("query", req.URL.Query()))
+		return
+	}
+
+	score, err := a.scoresStorage.Find(gameId, name)
+	if err != nil {
+		a.resp.createInternalErrorResponse(w, req, fmt.Errorf("error find score: %w", err))
+		a.logger.Error("can't find score", zap.Error(err))
+	}
+
+	a.resp.createResponse(w, req, score)
 }

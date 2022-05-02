@@ -28,3 +28,22 @@ func (s *ScoresStorage) Replace(score *internal.Score) error {
 
 	return nil
 }
+
+// Find returns scores
+func (s *ScoresStorage) Find(gameId, name string) (*internal.Score, error) {
+	var scores [][]*internal.Score
+	err := s.client.Call17Typed(
+		"API.scores.get.v1",
+		[]interface{}{gameId, name},
+		&scores,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't find score: %w", err)
+	}
+
+	if len(scores) == 0 {
+		return nil, nil
+	}
+
+	return scores[0][0], nil
+}

@@ -36,57 +36,57 @@ func TestApi_SetScore(t *testing.T) {
 		want func() (int, int, int, int, int)
 	}{
 		{
-			"success",
-			&args{
-				"gameId=123&name=Roman&score=50&expiresAt=1649686891",
+			name: "success",
+			args: &args{
+				params: "gameId=123&name=Roman&score=50&expiresAt=1649686891",
 			},
-			func() (int, int, int, int, int) {
+			want: func() (int, int, int, int, int) {
 				scoresStorage.EXPECT().Replace(gomock.Any()).Return(nil)
 				return 0, 0, 0, 0, 0
 			},
 		},
 		{
-			"game_id is required",
-			&args{
-				"name=Roman&score=50&expiresAt=1649686891",
+			name: "game_id is required",
+			args: &args{
+				params: "name=Roman&score=50&expiresAt=1649686891",
 			},
-			func() (int, int, int, int, int) {
+			want: func() (int, int, int, int, int) {
 				return 1, 0, 0, 0, 0
 			},
 		},
 		{
-			"name is required",
-			&args{
-				"gameId=123&score=50&expiresAt=1649686891",
+			name: "name is required",
+			args: &args{
+				params: "gameId=123&score=50&expiresAt=1649686891",
 			},
-			func() (int, int, int, int, int) {
+			want: func() (int, int, int, int, int) {
 				return 0, 1, 0, 0, 0
 			},
 		},
 		{
-			"score is required",
-			&args{
-				"gameId=123&name=Roman&expiresAt=1649686891",
+			name: "score is required",
+			args: &args{
+				params: "gameId=123&name=Roman&expiresAt=1649686891",
 			},
-			func() (int, int, int, int, int) {
+			want: func() (int, int, int, int, int) {
 				return 0, 0, 1, 0, 0
 			},
 		},
 		{
-			"can't convert score",
-			&args{
-				"gameId=123&name=Roman&score=mock&expiresAt=1649686891",
+			name: "can't convert score",
+			args: &args{
+				params: "gameId=123&name=Roman&score=mock&expiresAt=1649686891",
 			},
-			func() (int, int, int, int, int) {
+			want: func() (int, int, int, int, int) {
 				return 0, 0, 0, 1, 0
 			},
 		},
 		{
-			"can't replace",
-			&args{
-				"gameId=123&name=Roman&score=50&expiresAt=1649686891",
+			name: "can't replace",
+			args: &args{
+				params: "gameId=123&name=Roman&score=50&expiresAt=1649686891",
 			},
-			func() (int, int, int, int, int) {
+			want: func() (int, int, int, int, int) {
 				scoresStorage.EXPECT().Replace(gomock.Any()).Return(errors.New("mock"))
 				return 0, 0, 0, 0, 1
 			},
