@@ -3,6 +3,7 @@ package main
 import (
 	"cow/internal"
 	http_internal "cow/internal/http"
+	tnt "cow/internal/tarantool"
 	"fmt"
 	"github.com/tarantool/go-tarantool"
 	"go.uber.org/zap"
@@ -14,15 +15,15 @@ import (
 )
 
 func main() {
-	//logger, _ := initLogger()
-	//tntClient := initTntClient(logger)
-	//scoreStorage := tnt.NewScoresStorage(tntClient)
+	logger, _ := initLogger()
+	tntClient := initTntClient(logger)
+	scoreStorage := tnt.NewScoresStorage(tntClient)
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	go func() {
-		//initHttpServer(scoreStorage, logger)
-		//wg.Done()
+		initHttpServer(scoreStorage, logger)
+		wg.Done()
 	}()
 
 	wg.Wait()
